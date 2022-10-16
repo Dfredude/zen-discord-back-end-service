@@ -14,6 +14,7 @@ import {
   TEST_COMMAND,
   HasGuildCommands,
 } from './commands.js';
+import e from 'express';
 
 // Create an express app
 const app = express();
@@ -62,7 +63,7 @@ app.post('/interactions', async function (req, res) {
       });
     }
     // "challenge" guild command
-    if (name === 'challenge' && id) {
+    else if (name === 'challenge' && id) {
       const userId = req.body.member.user.id;
       // User's object choice
       const objectName = req.body.data.options[0].value;
@@ -94,6 +95,26 @@ app.post('/interactions', async function (req, res) {
           ],
         },
       });
+    }
+
+    // Shutdown EC2 instance
+    else if(name === "shut-ec2"){
+      try{
+        fetch("https://gf39ofzx92.execute-api.us-east-1.amazonaws.com/dev/stop-ec3-after-an-hour")
+        return res.send({
+          type:InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `EC2 shutdown succesful!`
+          }
+        })
+      } catch (e){
+        return res.send({
+          type:InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `EC2 shutdown unsuccesful! ${e}`
+          }
+        })
+      }
     }
   }
 
