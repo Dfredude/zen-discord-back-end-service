@@ -15,6 +15,7 @@ import {
   SHUT_DOWN_EC2_COMMAND,
   HasGuildCommands,
 } from './commands.js';
+import fetch from 'node-fetch';
 
 // Create an express app
 const app = express();
@@ -98,13 +99,14 @@ app.post('/interactions', async function (req, res) {
     }
 
     // Shutdown EC2 instance
-    else if(name === "shutEC2"){
+    else if(name === "shut-ec2"){
       try{
-        fetch("https://gf39ofzx92.execute-api.us-east-1.amazonaws.com/dev/stop-ec3-after-an-hour")
+        const response = await fetch("https://gf39ofzx92.execute-api.us-east-1.amazonaws.com/dev/stop-ec3-after-an-hour")
+        const data = await response.json()
         return res.send({
           type:InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
-            content: `EC2 shutdown succesful!`
+            content: `EC2 shutdown succesful! ${data}`
           }
         })
       } catch (e){
