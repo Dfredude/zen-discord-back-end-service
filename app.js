@@ -12,6 +12,7 @@ import { getShuffledOptions, getResult } from './game.js';
 import {
   CHALLENGE_COMMAND,
   TEST_COMMAND,
+  SHUT_DOWN_EC2_COMMAND,
   HasGuildCommands,
 } from './commands.js';
 
@@ -206,5 +207,6 @@ app.listen(PORT, () => {
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
     TEST_COMMAND,
     CHALLENGE_COMMAND,
+    SHUT_DOWN_EC2_COMMAND
   ]);
 });

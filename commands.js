@@ -80,3 +80,9 @@ export const CHALLENGE_COMMAND = {
   ],
   type: 1,
 };
+
+export const SHUT_DOWN_EC2_COMMAND = {
+  name: 'shutEC2',
+  description: 'Shut downs EC2 instances',
+  type: 1
+}
