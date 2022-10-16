@@ -14,7 +14,6 @@ import {
   TEST_COMMAND,
   HasGuildCommands,
 } from './commands.js';
-import e from 'express';
 
 // Create an express app
 const app = express();
@@ -98,7 +97,7 @@ app.post('/interactions', async function (req, res) {
     }
 
     // Shutdown EC2 instance
-    else if(name === "shut-ec2"){
+    else if(name === "shutEC2"){
       try{
         fetch("https://gf39ofzx92.execute-api.us-east-1.amazonaws.com/dev/stop-ec3-after-an-hour")
         return res.send({
