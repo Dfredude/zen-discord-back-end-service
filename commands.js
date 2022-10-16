@@ -86,3 +86,9 @@ export const SHUT_DOWN_EC2_COMMAND = {
   description: 'Shut downs EC2 instances',
   type: 1
 };
+
+export const START_EC2_COMMAND = {
+  name: 'start-ec2',
+  description: 'Turns on EC2 instance',
+  type: 1
+}

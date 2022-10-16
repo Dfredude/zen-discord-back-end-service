@@ -13,6 +13,7 @@ import {
   CHALLENGE_COMMAND,
   TEST_COMMAND,
   SHUT_DOWN_EC2_COMMAND,
+  START_EC2_COMMAND,
   HasGuildCommands,
 } from './commands.js';
 import fetch from 'node-fetch';
@@ -103,6 +104,10 @@ app.post('/interactions', async function (req, res) {
       try{
         const response = await fetch("https://gf39ofzx92.execute-api.us-east-1.amazonaws.com/dev/stop-ec3-after-an-hour")
         const data = await response.json()
+        if (response.status !== 200){
+          throw `${response.statusText}\n${data}`;
+        }
+        
         return res.send({
           type:InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
@@ -114,6 +119,25 @@ app.post('/interactions', async function (req, res) {
           type:InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
             content: `EC2 shutdown unsuccesful! ${e}`
+          }
+        })
+      }
+    }
+    else if (name == "start-ec2"){
+      const response = await fetch("https://ca3ee6n5q9.execute-api.us-east-1.amazonaws.com/dev/turn-on-ec2")
+      const data = await response.json()
+      if (response.status === 200){
+        return res.send({
+          type:InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `EC2 start successful! ${data}`
+          }
+        })
+      } else{
+        return res.send({
+          type:InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: `EC2 start unsuccesful\n${data}`
           }
         })
       }
@@ -209,6 +233,7 @@ app.listen(PORT, () => {
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
     TEST_COMMAND,
     CHALLENGE_COMMAND,
-    SHUT_DOWN_EC2_COMMAND
+    SHUT_DOWN_EC2_COMMAND,
+    START_EC2_COMMAND
   ]);
 });
